@@ -1,8 +1,9 @@
 import cartService from '../services/cart'
+import { NEW_ITEM, INIT_ITEMS } from './types'
 
 const cartReducer = (state = [], action) => {
   switch (action.type) {
-    case 'NEW_ITEM':
+    case NEW_ITEM:
       if (!state.some((el) => el.id === action.data.id)) {
         const newState = [...state, action.data]
         localStorage.setItem('cart', JSON.stringify(newState))
@@ -21,7 +22,7 @@ const cartReducer = (state = [], action) => {
         }
       }
 
-    case 'INIT_ITEMS':
+    case INIT_ITEMS:
       return action.data
     default:
       return state
@@ -32,7 +33,7 @@ export const initItems = () => {
   return async dispatch => {
     const items = JSON.parse(localStorage.getItem('cart'))
     dispatch({
-      type: 'INIT_ITEMS',
+      type: INIT_ITEMS,
       data: items || []
     })
   }
@@ -50,7 +51,7 @@ export const addNewItem = (id) => {
     } else {
       item.amountOfGoods = 1
       dispatch({
-        type: 'NEW_ITEM',
+        type: NEW_ITEM,
         data: item,
         stockamount: itemAmount,
       })

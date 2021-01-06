@@ -40,8 +40,6 @@ const SignUp = (props) => {
       email: newEmail
     }
 
-    console.log(11111, newUser);
-
     userServices.createNewUser(newUser).then((data) => console.log(2222, data)).catch((e) => console.log('Error: ', e))
 
   };

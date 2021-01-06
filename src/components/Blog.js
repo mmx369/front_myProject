@@ -1,20 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { deleteBlog, addLike, addDislike } from '../reducers/blogReducer'
 
-const Blog = () => (
-  <div>
-    <h2>Blog</h2>
-    <p>
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-      Lorem Ipsum has been the industry's standard dummy text ever since the
-      1500s, when an unknown printer took a galley of type and scrambled it to
-      make a type specimen book. It has survived not only five centuries, but
-      also the leap into electronic typesetting, remaining essentially
-      unchanged. It was popularised in the 1960s with the release of Letraset
-      sheets containing Lorem Ipsum passages, and more recently with desktop
-      publishing software like Aldus PageMaker including versions of Lorem
-      Ipsum.
-    </p>
-  </div>
-);
 
-export default Blog
+const Blog = ({ blog }) => {
+
+  const [isTester, setIsTester] = useState(false)
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("loggedUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setIsTester(user.name === 'tester')
+    }
+  }, [isTester]);
+
+  const dispatch = useDispatch()
+
+
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: "solid",
+    borderWidth: 1,
+    marginBottom: 5,
+  };
+
+  const handleLike = (id) => {
+    dispatch(addLike(id))
+  }
+
+  const handleDislike = (id) => {
+    dispatch(addDislike(id))
+  }
+
+  const handleDelete = (id) => {
+    dispatch(deleteBlog(id))
+  }
+
+  return (
+    <div style={blogStyle}>
+      <strong>{blog.title}</strong>&nbsp;author: {blog.author}&nbsp;{blog.date.toString()}
+      <p>
+        {blog.content}
+      </p>
+        likes: {blog.likes}
+      <button onClick={() => handleLike(blog.id)}>like</button>
+      <button onClick={() => handleDislike(blog.id)}>dislike</button>
+
+
+      {isTester ? <button onClick={() => handleDelete(blog.id)}>delete blog</button> : null}
+
+    </div>
+  );
+};
+
+export default Blog;

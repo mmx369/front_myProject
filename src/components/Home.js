@@ -1,13 +1,13 @@
 import React from "react";
 import Notification from '../components/Notification'
-import { useDispatch } from "react-redux";
+import GridList from './GridList'
 
 
 const Home = () => {
-  const dispatch = useDispatch()
 
   return (
     <div>
+      <GridList />
       <Notification msg={'sssss'} />
       <h2>Home</h2>
       <p>
